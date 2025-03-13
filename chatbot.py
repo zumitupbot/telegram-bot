@@ -1,5 +1,5 @@
 import logging
-from telegram.ext import filters, updater, CommandHandler, MessageHandler 
+from telegram.ext import application, CommandHandler, MessageHandler, filters 
 from telegram.ext.dispatcher import run_async  # ✅ Import run_async for faster replies
 
 # Enable logging
@@ -37,8 +37,8 @@ def reply_fine(update, context):
 
 
 def main():
-    updater = Updater(BOT_TOKEN, use_context=True)
-    dp = updater.dispatcher
+    application = Application.builder().token("YOUR_BOT_TOKEN").build()
+    dispacher = application
 
     # Register command handlers
     dp.add_handler(CommandHandler("start", start))
@@ -50,7 +50,7 @@ def main():
                                   reply_fine))
 
     # Start the bot
-    updater.start_polling()
+    application.run_polling()
     logger.info("🤖 Chatbot is running...")
     updater.idle()
 
