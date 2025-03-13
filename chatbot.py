@@ -1,5 +1,5 @@
 import logging
-from telegram.ext import filters, updater CommandHandler, MessageHandler 
+from telegram.ext import filters, updater, CommandHandler, MessageHandler 
 from telegram.ext.dispatcher import run_async  # ✅ Import run_async for faster replies
 
 # Enable logging
