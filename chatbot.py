@@ -12,7 +12,7 @@ logging.basicConfig(
 logger = logging.getLogger("mybot")
 
 # Replace with your BotFather token
-os.environ.get("7736822115:AAHjGVr1iWQ_mEL3uOkE93unYUd6z-wDltM")
+os.environ.get("BOT_TOKEN")
 
 
 # ✅ Faster response: Use @run_async
