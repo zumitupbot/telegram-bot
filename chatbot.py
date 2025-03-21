@@ -1,3 +1,4 @@
+import os
 from keep_alive import keep_alive
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
