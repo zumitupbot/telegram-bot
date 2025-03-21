@@ -1,4 +1,5 @@
 import os
+import sys
 from keep_alive import keep_alive
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
@@ -15,7 +16,7 @@ logger = logging.getLogger("mybot")
 os.environ.get("BOT_TOKEN")
 if not BOT_TOKEN:
     print("error: BOT_TOKEN is not set! please check your environment variables.")
-    exist(1)
+   sys.exit(1)
     print(f"loaded BOT_TOKEN: {BOT_TOKEN[:10]}****")
 
 # ✅ Faster response: Use @run_async
