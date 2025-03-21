@@ -1,6 +1,7 @@
+from keep_alive import keep_alive
 import logging
-from telegram.ext import application, CommandHandler, MessageHandler, filters 
-from telegram.ext.dispatcher import run_async  # ✅ Import run_async for faster replies
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext.dispatcher import run_async
 
 # Enable logging
 logging.basicConfig(
@@ -10,19 +11,37 @@ logging.basicConfig(
 logger = logging.getLogger("mybot")
 
 # Replace with your BotFather token
-BOT_TOKEN = "7736822115:AAFbsHBJeB-goS3U3g6x0p0mGVELqbg7k6Q"
+BOT_TOKEN = "7736822115:AAHjGVr1iWQ_mEL3uOkE93unYUd6z-wDltM"
 
 
 # ✅ Faster response: Use @run_async
 @run_async
 def start(update, context):
     update.message.reply_text(
-        "Hello! I am your chatbot. Say 'hi' and I'll greet you!")
+        "Hello! I am your chatbot. Here are some commands you can use:\n"
+        "/help - Show available commands\n"
+        "/about - Learn about this bot\n"
+        "You can also just chat with me!"
+    )
 
 
 @run_async
 def help_command(update, context):
-    update.message.reply_text("Just send me a message, and I'll respond!")
+    update.message.reply_text(
+        "Available commands:\n"
+        "/start - Start the bot\n"
+        "/help - Show this help message\n"
+        "/about - Learn about this bot\n\n"
+        "Or simply chat with me by saying hi, how are you, etc."
+    )
+
+
+@run_async
+def about_command(update, context):
+    update.message.reply_text(
+        "I'm a simple chatbot created with Python and the Telegram Bot API. "
+        "I can respond to basic messages and commands!"
+    )
 
 
 @run_async
@@ -33,24 +52,41 @@ def reply_hi(update, context):
 
 @run_async
 def reply_fine(update, context):
-    update.message.reply_text("Nice!")
+    update.message.reply_text("Nice! What are you up to today?")
+
+
+@run_async
+def reply_how_are_you(update, context):
+    update.message.reply_text("I'm doing great, thanks for asking! How about you?")
+
+
+@run_async
+def reply_default(update, context):
+    update.message.reply_text(
+        "hi."
+    )
 
 
 def main():
-    application = Application.builder().token("YOUR_BOT_TOKEN").build()
-    dispacher = application
+    updater = Updater(BOT_TOKEN, use_context=True)
+    dp = updater.dispatcher
 
     # Register command handlers
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help_command))
+    dp.add_handler(CommandHandler("about", about_command))
 
-    # ✅ Faster filters
-    dp.add_handler(MessageHandler(Filters.regex("(?i)^hi$"), reply_hi))
-    dp.add_handler(MessageHandler(Filters.regex("(?i)^i am fine$"),
-                                  reply_fine))
+    # ✅ Faster filters for messages
+    dp.add_handler(MessageHandler(Filters.regex("(?i)^hi$|^hello$"), reply_hi))
+    dp.add_handler(MessageHandler(Filters.regex("(?i)^i am fine$|^i'm good$|^good$|^great$"), reply_fine))
+    dp.add_handler(MessageHandler(Filters.regex("(?i)^how are you$|^how are you\?$"), reply_how_are_you))
+    
+    # Default handler for other messages
+    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, reply_default))
 
     # Start the bot
-    application.run_polling()
+    keep_alive()
+    updater.start_polling()
     logger.info("🤖 Chatbot is running...")
     updater.idle()
 
