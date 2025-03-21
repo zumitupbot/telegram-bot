@@ -13,7 +13,10 @@ logger = logging.getLogger("mybot")
 
 # Replace with your BotFather token
 os.environ.get("BOT_TOKEN")
-
+if not BOT_TOKEN:
+    print("error: BOT_TOKEN is not set! please check your environment variables.")
+    exist(1)
+    print(f"loaded BOT_TOKEN: {BOT_TOKEN[:10]}****")
 
 # ✅ Faster response: Use @run_async
 @run_async
